@@ -32,10 +32,6 @@ public class Main {
         ****************************
         """;
 
-        // Setting URL
-
-
-
             Scanner teclado = new Scanner(System.in);
             while (opcion != 8){
                 System.out.println(menu);
