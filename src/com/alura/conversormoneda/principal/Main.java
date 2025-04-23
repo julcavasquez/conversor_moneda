@@ -1,20 +1,15 @@
 package com.alura.conversormoneda.principal;
 
 import com.alura.conversormoneda.modelos.Moneda;
-import com.alura.conversormoneda.modelos.MonedaOmdb;
 import com.alura.conversormoneda.servicios.ApiConversion;
-import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+    static ArrayList<Moneda> listaDeConversiones = new ArrayList<>();
     public static void main(String[] args) throws IOException, InterruptedException {
         int opcion = 0;
         double monto = 0.0;
@@ -29,7 +24,8 @@ public class Main {
         4) Real brasileño =>> Dolar
         5) Dolar =>> Peso colombiano
         6) Peso colombiano=>> Dolar
-        7) Salir");
+        7) Historial de Conversiones
+        8) Salir
         Elija una opción válida:
         ****************************
         """;
@@ -39,7 +35,7 @@ public class Main {
 
 
             Scanner teclado = new Scanner(System.in);
-            while (opcion != 7){
+            while (opcion != 8){
                 System.out.println(menu);
                 opcion = teclado.nextInt();
                 switch (opcion){
@@ -74,6 +70,12 @@ public class Main {
                         lanzarConversion(monto,"COP","USD");
                         break;
                     case 7:
+                        System.out.println("Mostrando Historial de sus Conversiones");
+                        for (int i = 0; i < listaDeConversiones.size(); i++) {
+                            System.out.println(listaDeConversiones.get(i).toString());
+                        }
+                        break;
+                    case 8:
                         System.out.println("Saliendo del programa, gracias");
                         break;
                     default:
@@ -95,6 +97,7 @@ public class Main {
             Moneda moneda = gson.fromJson(datos, Moneda.class);
             moneda.setMontoConvertir(monto);
             moneda.calculaConversion(monto,moneda.getTasaDeConversion());
+            listaDeConversiones.add(moneda);
             System.out.println(moneda.toString());
         }else{
             System.out.println("Ocurrio un error");
