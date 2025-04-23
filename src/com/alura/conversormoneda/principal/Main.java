@@ -5,6 +5,8 @@ import com.alura.conversormoneda.servicios.ApiConversion;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -72,7 +74,9 @@ public class Main {
                     case 7:
                         System.out.println("Mostrando Historial de sus Conversiones");
                         for (int i = 0; i < listaDeConversiones.size(); i++) {
-                            System.out.println(listaDeConversiones.get(i).toString());
+                            System.out.println(listaDeConversiones.get(i).toString() + " " +
+                                    " Fecha de Conversion: " +
+                                    listaDeConversiones.get(i).getFechaHora());
                         }
                         break;
                     case 8:
@@ -87,6 +91,8 @@ public class Main {
 
     public static void lanzarConversion(double monto, String origen, String destino){
         String cadenaApi = "";
+        LocalDateTime fechaHoy = LocalDateTime.now();
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         ApiConversion api = new ApiConversion();
         String url_str = "https://v6.exchangerate-api.com/v6/"+
                 "d0895a31916ca7671251f6d1/pair/";
@@ -95,6 +101,7 @@ public class Main {
         if (datos != "0"){
             Gson gson = new Gson();
             Moneda moneda = gson.fromJson(datos, Moneda.class);
+            moneda.setFechaHora(String.valueOf(fechaHoy.format(formatoFecha)));
             moneda.setMontoConvertir(monto);
             moneda.calculaConversion(monto,moneda.getTasaDeConversion());
             listaDeConversiones.add(moneda);

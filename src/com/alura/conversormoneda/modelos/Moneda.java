@@ -11,6 +11,15 @@ public class Moneda {
     private double TasaDeConversion;
     private double totalConversion;
     private double montoConvertir;
+    private String fechaHora;
+
+    public String getFechaHora() {
+        return fechaHora;
+    }
+
+    public void setFechaHora(String fechaHora) {
+        this.fechaHora = fechaHora;
+    }
 
     public double getMontoConvertir() {
         return montoConvertir;
